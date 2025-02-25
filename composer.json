@@ -1,5 +1,6 @@
 {
     "name": "ijodkor/quick-http",
+    "description": "PHP Http methods collection to use easy",
     "type": "library",
     "autoload": {
         "psr-4": {

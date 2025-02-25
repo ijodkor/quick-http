@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Shared\Requests;
+namespace Ijodkor\QuickHttp;
 
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\ConnectionException;
@@ -56,7 +56,7 @@ class HttpRequestService {
      * @throws ConnectionException
      * @throws RequestException
      */
-    public function getObject(string $url, array $urlParams = [], array $queryParams = []): object|null{
+    public function getObject(string $url, array $urlParams = [], array $queryParams = []): object|null {
         return $this->get($url, $urlParams, $queryParams)->object();
     }
 
@@ -114,6 +114,15 @@ class HttpRequestService {
      */
     public function postBody(string $url, array $data = [], array $urlParams = [], array $queryParams = []): string {
         return $this->post($url, $data, $urlParams, $queryParams)->body();
+    }
+
+    public function postRaw(string $url, string $data, array $urlParams, array $queryParams = []): array {
+        return $this->request()
+            ->withBody($data)
+            ->withUrlParameters($urlParams)
+            ->withQueryParameters($queryParams)
+            ->post($url)
+            ->json();
     }
 
     /**

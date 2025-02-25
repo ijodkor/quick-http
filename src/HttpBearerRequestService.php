@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Shared\Requests;
+namespace Ijodkor\QuickHttp;
 
 use Closure;
 use Illuminate\Http\Client\PendingRequest;

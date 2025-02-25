@@ -1,9 +1,12 @@
 <?php
 
-namespace Modules\Shared\Requests;
+namespace Ijodkor\QuickHttp;
 
+use Closure;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class HttpBasicRequestService extends HttpRequestService {
     private string $username;
@@ -26,18 +29,25 @@ class HttpBasicRequestService extends HttpRequestService {
     protected function request(): PendingRequest {
         return Http::withBasicAuth($this->username, $this->password)
             ->baseUrl($this->url)
+            ->withResponseMiddleware($this->responseMiddleware())
+            ->withMiddleware($this->middleware())
             ->timeout($this->timeout)
             ->asForm()
             ->retry($this->retry, 100)
             ->acceptJson();
     }
 
-    public function postRaw(string $url, string $data, array $urlParams, array $queryParams = []): array {
-        return $this->request()
-            ->withBody($data)
-            ->withUrlParameters($urlParams)
-            ->withQueryParameters($queryParams)
-            ->post($url)
-            ->json();
+    protected function responseMiddleware(): Closure {
+        return function(ResponseInterface $response): ResponseInterface {
+            return $response;
+        };
+    }
+
+    protected function middleware(): Closure {
+        return function(callable $handler) {
+            return function(RequestInterface $request, array $options) use ($handler) {
+                return $handler($request, $options);
+            };
+        };
     }
 }
