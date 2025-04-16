@@ -32,7 +32,6 @@ class HttpBasicRequestService extends HttpRequestService {
             ->withResponseMiddleware($this->responseMiddleware())
             ->withMiddleware($this->middleware())
             ->timeout($this->timeout)
-            ->asForm()
             ->retry($this->retry, 100)
             ->acceptJson();
     }
