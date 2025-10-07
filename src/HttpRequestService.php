@@ -81,8 +81,9 @@ class HttpRequestService {
      * @throws ConnectionException
      * @throws RequestException
      */
-    protected function post(string $url, array|string $data, array $urlParams = [], $queryParams = []): PromiseInterface|Response {
+    protected function post(string $url, array|string|object $data, array $urlParams = [], $queryParams = []): PromiseInterface|Response {
         return $this->request()
+            ->withHeaders($this->headers)
             ->withUrlParameters($urlParams)
             ->withQueryParameters($queryParams)
             ->withOptions(["verify" => false])
@@ -95,7 +96,7 @@ class HttpRequestService {
      * @throws ConnectionException
      * @throws RequestException
      */
-    public function postJson(string $url, array $data = [], array $urlParams = [], $queryParams = []): ?array {
+    public function postJson(string $url, array|string|object $data = [], array $urlParams = [], $queryParams = []): ?array {
         return $this->post($url, $data, $urlParams, $queryParams)->json();
     }
 
@@ -104,7 +105,7 @@ class HttpRequestService {
      * @throws ConnectionException
      * @throws RequestException
      */
-    public function postObject(string $url, array|string $data = [], array $urlParams = [], $queryParams = []): ?object {
+    public function postObject(string $url, array|string|object $data = [], array $urlParams = [], array $queryParams = []): ?object {
         return $this->post($url, $data, $urlParams, $queryParams)->object();
     }
 
@@ -112,7 +113,7 @@ class HttpRequestService {
      * @throws ConnectionException
      * @throws RequestException
      */
-    public function postBody(string $url, array $data = [], array $urlParams = [], array $queryParams = []): string {
+    public function postBody(string $url, array|string|object $data = [], array $urlParams = [], array $queryParams = []): string {
         return $this->post($url, $data, $urlParams, $queryParams)->body();
     }
 
