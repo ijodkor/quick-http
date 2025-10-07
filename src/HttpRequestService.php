@@ -105,7 +105,7 @@ class HttpRequestService {
      * @throws ConnectionException
      * @throws RequestException
      */
-    public function postObject(string $url, array|string|object $data = [], array $urlParams = [], $queryParams = []): ?object {
+    public function postObject(string $url, array|string|object $data = [], array $urlParams = [], array $queryParams = []): ?object {
         return $this->post($url, $data, $urlParams, $queryParams)->object();
     }
 
